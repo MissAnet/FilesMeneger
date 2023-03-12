@@ -154,9 +154,12 @@ namespace WpfApp4
                     }
                 }
             }
-            catch { MessageBox.Show("Ошибка при запуске консоли."); }
-            //Console.WriteLine(_command);
-            //Console.WriteLine(path_);
+            catch 
+            { 
+                MessageBox.Show("Ошибка при запуске консоли."); 
+                path_ = ""; 
+                OpenConsole(); 
+            }
         }
 
         //open file/directory
@@ -190,11 +193,13 @@ namespace WpfApp4
                         Console.WriteLine("Папки не существует");
                     }
                 }
+                path_ = path;
                 OpenConsole();
             }
             catch 
             { 
-                Console.WriteLine("Не удалось открыть файл"); 
+                Console.WriteLine("Не удалось открыть файл");
+                path_ = "";
                 OpenConsole(); }
         }
 
@@ -241,11 +246,13 @@ namespace WpfApp4
                         Console.WriteLine("Папка " + path_ + " создана");
                     }
                 }
+                path_ = path_.Substring(0, path_.LastIndexOf("/") + 1);
                 OpenConsole();
             }
             catch
             { 
                 MessageBox.Show("Невозможно создать файл , попробуйте в другом месте или с другим названием/расширением");
+                path_ = "";
                 OpenConsole();
             }
         }
@@ -261,9 +268,15 @@ namespace WpfApp4
             try
             {
                 Console.WriteLine("Файл/Папка " + command.Delete(path, select_element)+select_element + " был/а удален/а");
+                path_ = path;
                 OpenConsole();
             }
-            catch { Console.WriteLine("Не удалось удалить , попробуйте другой документ"); OpenConsole(); }
+            catch 
+            { 
+                Console.WriteLine("Не удалось удалить , попробуйте другой документ"); 
+                path_ = ""; 
+                OpenConsole(); 
+            }
         }
 
         //COpy
@@ -279,9 +292,15 @@ namespace WpfApp4
 
                 command.MetodCopy(path,select_element);
                 Console.WriteLine("Скопировано");
+                path_ = path;
                 OpenConsole();
             }
-            catch { Console.WriteLine("Не удалось скопировать файл/папку"); OpenConsole(); }
+            catch 
+            { 
+                Console.WriteLine("Не удалось скопировать файл/папку");
+                path_ = "";
+                OpenConsole(); 
+            }
         }
 
         //Paste
@@ -291,9 +310,15 @@ namespace WpfApp4
             {
                 command.MetodPaste(path_);
                 Console.WriteLine("Перемещено");
+                path_ = path_.Substring(0, path_.LastIndexOf("/") + 1);
                 OpenConsole();
             }
-            catch { Console.WriteLine("Не удалось перенести файл/папку"); OpenConsole(); }
+            catch 
+            { 
+                Console.WriteLine("Не удалось перенести файл/папку");
+                path_ = ""; 
+                OpenConsole(); 
+            }
         }
 
         //Rename
@@ -339,6 +364,7 @@ namespace WpfApp4
                     }
                         File.Move(path + name + extension, path + new_name + extension);
                         Console.WriteLine("Переименовано");
+                    path_ = path;
                         OpenConsole();
                 }
                 else
@@ -354,12 +380,14 @@ namespace WpfApp4
                     }
                         Directory.Move(path + new_name, path + new_name);
                         Console.WriteLine("Переименовано");
-                        OpenConsole();
+                    path_ = path;
+                    OpenConsole();
                 }
             }
             catch 
             {
                 Console.WriteLine("Не удалось переименовать файл/папку");
+                path_ = "";
                 OpenConsole(); }
         }
         //archive
@@ -372,11 +400,13 @@ namespace WpfApp4
             {
                 command.Archive(path_, arch_path, select_element);
                 Console.WriteLine("Архив создан");
+                path_ = path;
                 OpenConsole();
             }
             catch
             {
                 Console.WriteLine("Не удалось создать архив");
+                path_ = "";
                 OpenConsole();
             }
         }
@@ -393,6 +423,7 @@ namespace WpfApp4
 
                 if (select_element != null & (fileAttributes & FileAttributes.Directory) != FileAttributes.Directory)
                 {
+                    Console.ForegroundColor = ConsoleColor.Blue;
                     FileInfo file = new FileInfo(path_);
                     Console.WriteLine("Название: "+ file.Name);
                     Console.WriteLine("Полное название: " + (file.FullName).ToString());
@@ -400,10 +431,13 @@ namespace WpfApp4
                     Console.WriteLine("Дата создания: "+ (file.CreationTime).ToString());
                     Console.WriteLine("Последняя дата редактирования: "+(file.LastWriteTime).ToString());
                 }
+
+                path_ = path;
                 OpenConsole();
             }
             catch
             {
+                path_ = "";
                 OpenConsole();
             }
         }
