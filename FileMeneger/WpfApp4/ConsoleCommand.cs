@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Shapes;
 
 namespace WpfApp4
 {
@@ -26,7 +27,7 @@ namespace WpfApp4
 
 
         string _command;
-        string path_;
+        string path_ ="";
         string select_element;
         string path;
         bool isFile;
@@ -38,13 +39,48 @@ namespace WpfApp4
             ShowWindow(GetConsoleWindow(), SW_PAR);
             main = mainWindow;
         }
+        //load
+        public void Loading()
+        {
+            if (path_ == "")
+            {
+                string[] disks = Environment.GetLogicalDrives();
+                for (int i = 0; i < disks.Length; i++)
+                {
+                    Console.WriteLine(disks[i].ToString());
+                }
+            }
+            else
+            {
+                DirectoryInfo directoryInfo = new DirectoryInfo(path_);
+
+                DirectoryInfo[] directories = directoryInfo.GetDirectories();
+                FileInfo[] files = directoryInfo.GetFiles();
+
+                Console.WriteLine("======================================================");
+                for (int i = 0; i < files.Length; i++)
+                {
+                    Console.WriteLine(files[i].ToString());
+                }
+                for (int i = 0; i < directories.Length; i++)
+                {
+                    Console.WriteLine(directories[i].ToString());
+                }
+                Console.WriteLine("======================================================");
+            }
+        }
         //OpenConsole
         public void OpenConsole()
         {
             try
             {
                 AllocConsole();
-                Console.WriteLine("Command:\r\n            Delete:path\r\n            Create:path\r\n            Open:path\r\n            Copy:path\r\n            Rename:path\r\n            Paste:path\r\n            Archivate:path");
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Loading();
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Command:\r\n            Delete:path\r\n            Create:path\r\n            Open:path\r\n            Copy:path\r\n            Rename:path\r\n            Paste:path\r\n            Info:path\r\n            Archivate:path");
                 Console.WriteLine("Write exit for close console");
                 string console_context = Console.ReadLine();
 
@@ -88,10 +124,12 @@ namespace WpfApp4
                                 case "Archivate":
                                     Archive();
                                     break;
+                                case "Info":
+                                    Info();
+                                    break;
                                 default:
                                     OpenConsole();
                                     break;
-
                             }
                         }
                         else
@@ -135,14 +173,18 @@ namespace WpfApp4
                 if (path_.Contains("."))
                 {
                     if (File.Exists(path_))
+                    {
                         command.openFileDirectory(path, select_element);
+                    }
                     else
                         Console.WriteLine("Файла не существует");
                 }
                 else
                 {
                     if (Directory.Exists(path_))
+                    {
                         main.loadFileDir(path_);
+                    }
                     else
                     {
                         Console.WriteLine("Папки не существует");
@@ -335,6 +377,33 @@ namespace WpfApp4
             catch
             {
                 Console.WriteLine("Не удалось создать архив");
+                OpenConsole();
+            }
+        }
+
+        //info
+        public void Info()
+        {
+            path = path_.Substring(0, path_.LastIndexOf("/") + 1);
+            select_element = path_.Substring(path_.LastIndexOf("/") + 1);
+
+            try
+            {
+                FileAttributes fileAttributes = File.GetAttributes(path_);
+
+                if (select_element != null & (fileAttributes & FileAttributes.Directory) != FileAttributes.Directory)
+                {
+                    FileInfo file = new FileInfo(path_);
+                    Console.WriteLine("Название: "+ file.Name);
+                    Console.WriteLine("Полное название: " + (file.FullName).ToString());
+                    Console.WriteLine("Размер: "+(file.Length / 1024).ToString());
+                    Console.WriteLine("Дата создания: "+ (file.CreationTime).ToString());
+                    Console.WriteLine("Последняя дата редактирования: "+(file.LastWriteTime).ToString());
+                }
+                OpenConsole();
+            }
+            catch
+            {
                 OpenConsole();
             }
         }

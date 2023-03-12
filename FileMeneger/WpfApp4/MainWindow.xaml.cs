@@ -45,6 +45,7 @@ namespace WpfApp4
 
         public void loadFileDir(string path)
         {
+            path_ = path;
             DirectoryInfo directoryInfo;
             try
             {
