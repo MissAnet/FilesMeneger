@@ -1,0 +1,8 @@
+D:\vsrab\WpfApp4\FileMenegerConsole\bin\Debug\FileMenegerConsole.exe.config
+D:\vsrab\WpfApp4\FileMenegerConsole\bin\Debug\FileMenegerConsole.exe
+D:\vsrab\WpfApp4\FileMenegerConsole\bin\Debug\FileMenegerConsole.pdb
+D:\vsrab\WpfApp4\FileMenegerConsole\obj\Debug\FileMenegerConsole.csproj.AssemblyReference.cache
+D:\vsrab\WpfApp4\FileMenegerConsole\obj\Debug\FileMenegerConsole.csproj.SuggestedBindingRedirects.cache
+D:\vsrab\WpfApp4\FileMenegerConsole\obj\Debug\FileMenegerConsole.csproj.CoreCompileInputs.cache
+D:\vsrab\WpfApp4\FileMenegerConsole\obj\Debug\FileMenegerConsole.exe
+D:\vsrab\WpfApp4\FileMenegerConsole\obj\Debug\FileMenegerConsole.pdb
